@@ -2,12 +2,12 @@ $(function() {
     // your code here
     var config;
     var baseUrl = 'http://api.themoviedb.org/3/',
-        apiKey = 'cae620ff3f12488013dc1c9785960efe';
+        apiKey = 'c5fac6e46b8c503b90d975d5a4a6292b';
 
 
     function initialize(callback) {
         $.get(baseUrl + 'configuration', {
-            api_key: 'cae620ff3f12488013dc1c9785960efe'
+            api_key: 'c5fac6e46b8c503b90d975d5a4a6292b'
         },function(res) {
             config = res;
             console.log(config);
@@ -28,7 +28,30 @@ $(function() {
         });
 
         loadNowShowing();
+
+        $('.btn-upcoming').click(function() {
+            loadUpcoming();
+            return  false;
+        });
+
+        loadUpcoming();
+
+        $('.btn-popular').click(function() {
+            loadPopular();
+            return  false;
+        });
+
+        loadPopular();
+
+        $('.btn-top-rated').click(function() {
+            loadTopRated();
+            return  false;
+        });
+
+        loadTopRated();
+
     }
+
     function searchMovie(query) {
         var searchUrl = baseUrl + 'search/movie';
         $('.movies-list').html('');
@@ -39,6 +62,7 @@ $(function() {
             displayMovies(response);
         });
     }
+
     function displayMovies(data) {
         data.results.forEach(function(movie) {
             var imageSrc = config.images.base_url + config.images.poster_sizes[3] + movie.poster_path;
@@ -65,6 +89,37 @@ $(function() {
             displayMovies(response);
         });
     }
+
+    function loadUpcoming() {
+        var upcomingUrl = baseUrl + 'movie/upcoming';
+        $('.movies-list').html('');
+        $.get(upcomingUrl, {
+            api_key: apiKey
+        }, function(response) {
+            displayMovies(response);
+        });
+    }
+
+    function loadPopular() {
+        var popularUrl = baseUrl + 'movie/popular';
+        $('.movies-list').html('');
+        $.get(popularUrl, {
+            api_key: apiKey
+        }, function(response) {
+            displayMovies(response);
+        });
+    }
+
+    function loadTopRated() {
+        var topRatedUrl = baseUrl + 'movie/top_rated';
+        $('.movies-list').html('');
+        $.get(topRatedUrl, {
+            api_key: apiKey
+        }, function(response) {
+            displayMovies(response);
+        });
+    }
+    
     initialize(setEventHandlers);
 
 });
