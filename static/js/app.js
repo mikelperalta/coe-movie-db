@@ -73,7 +73,7 @@ $(function() {
                                 '</a>',
                                 '<center>','<b>',
                                 '<h4>',
-                                    '<a style="font-decoration: none;color:black;text-style:bold;font-family:Arial;" href="#">' + movie.title +'</a>',
+                                    '<a style="font-decoration: none; color:#FFFFFF; text-style:bold; font-family:Arial;" href="#">' + movie.title +'</a>',
                                 '</h4>',
                                 '</b>','</center>',
                             '</div>'     
