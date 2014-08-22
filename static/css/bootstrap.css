@@ -12,8 +12,9 @@ html {
 }
 body {
   margin: 0;
-  background-image: url(https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSed1uQ5PO2vuPeqt8mjCSuI1HiFl6QaTkna_Ixr_HhmMqd1PT5);
-  background-repeat: repeat;
+  background-image: url(http://p1.pichost.me/i/54/1771800.jpg);
+  background-repeat: repeat-y;
+  background-position: relative;
 }
 article,
 aside,
