@@ -67,14 +67,14 @@ $(function() {
         data.results.forEach(function(movie) {
             var imageSrc = config.images.base_url + config.images.poster_sizes[3] + movie.poster_path;
             var htmlStr = [
-                            '<div class="col-md-4 portfolio-item">',
+                            '<li>',
                                 '<a href="#">',
                                     '<img class="img-responsive" src="' + imageSrc + '" alt="">',
                                 '</a>',
                                 '<h3>',
                                     '<a href="#">' + movie.title +'</a>',
                                 '</h3>',
-                            '</div>'
+                            '</li>'
                             ];
             $('.movies-list').append($(htmlStr.join('')));
         });
