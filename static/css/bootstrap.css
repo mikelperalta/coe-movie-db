@@ -10,10 +10,18 @@ html {
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
 }
+
+#title {
+  font-style: bold;
+  font-family: sans-serif;
+  color: black;
+  font-size: 25px;
+  font-weight: bold;
+}
 body {
   margin: 0;
   background-image: url(http://purehdgallery.com/wp-content/uploads/2013/04/HD-Wallpaper-Blue-White-Wave-Patern-Background.jpg);
-  background-repeat: repeat-y;
+  background-attachment: fixed;
   background-position: relative;
 }
 article,

@@ -28,7 +28,7 @@
 
         loadNowShowing();
 
-        $('.btn-up-coming').click(function() {
+        $('.btn-upcoming').click(function() {
             upcoming();
             
         });
@@ -63,13 +63,13 @@
         data.results.forEach(function(movie) {
             var imageSrc = config.images.base_url + config.images.poster_sizes[1] + movie.poster_path;
             var htmlStr = [
-                            '<div class="col-md-4 portfolio-item">',
+                            '<div class="col-md-3 portfolio-item">',
                                 '<a href="/view/'+movie.id+'">',
-                                    '<img class="img-responsive" src="' + imageSrc + '" alt="">',
+                                    '<img style="height:275px;width:275px;border-style:solid;border-width:5px;border-color:black;"class="img-responsive" src="' + imageSrc + '" alt="">',
                                 '</a>',
-                                '<h9>',
-                                    '<a href="/view/'+movie.id+'" style="color:black">' + movie.title +'</a>',
-                                '</h9>',
+                                '<h4>','<center>',
+                                    '<a href="/view/'+movie.id+'" style="color:black;text-style:bold;">' + movie.title +'</a>',
+                                '</center>','</h4>',
                             '</div>'
                             ];
             $('.movies-list').append($(htmlStr.join('')));
@@ -131,7 +131,7 @@
 
         url = baseUrl + "movie/"+id+"/videos";
         $.get(url,reqParam,function(response){
-            var html = '<embed width="500" height="400" src="https://www.youtube.com/v/'+response.results[0].key+'" type="application/x-shockwave-flash">'
+            var html = '<embed width="70%" height="400" src="https://www.youtube.com/v/'+response.results[0].key+'" type="application/x-shockwave-flash">'
             $("#trailer").html(html);
         });
 
@@ -149,9 +149,18 @@
         $.get(url,reqParam,function(response){
             var movies = response.results;
             var allMovies = "";
+            var poster = config.images.base_url + config.images.poster_sizes[1];
             for(var i=0;i<movies.length;i++){
-                allMovies += (i==movies.length-1)? '<a href="/movie/'+movies[i].id+'">'+movies[i].title+'</a>, '
-                    : '<a href="/movie/'+movies[i].id+'">'+movies[i].title+'</a>';
+                allMovies += '<div class="col-sm-3 col-xs-6">'+
+                                '<a href="/view/'+movies[i].id+'">'+
+                                    '<img style="height:275px;width:275px;border-style:solid;border-width:5px;border-color:black;"class="img-responsive" class="img-responsive portfolio-item" src="'+poster+movies[i].poster_path+'" alt="">'+
+                                '</a>'+
+                                '<h5>'+
+                                    '<a href="/view/'+movies[i].id+'" style="color:black;text-style:bold;">'+movies[i].title+'</a>'+
+                                '</h5>'+
+                              '</div>';
+                //allMovies += (i==movies.length-1)? '<a href="/movie/'+movies[i].id+'">'+movies[i].title+'</a>, '
+                //    : '<a href="/movie/'+movies[i].id+'">'+movies[i].title+'</a>';
             }
             $("#similar").html(allMovies);
         });
