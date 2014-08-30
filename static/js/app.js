@@ -74,7 +74,6 @@
            })();
         }
 
-
     function loadNowShowing() {
         var nowShowingUrl = baseUrl + 'movie/now_playing';
         $('.movies-list').html('');
