@@ -1,5 +1,4 @@
-
-    // your code here
+// your code here
     var config;
     var baseUrl = 'http://api.themoviedb.org/3/';
     var apiKey = '99b4f3ecef69fffcf9e7b251fa336b31';
@@ -60,21 +59,21 @@
         });
     }
     function displayMovies(data) {
-        data.results.forEach(function(movie) {
-            var imageSrc = config.images.base_url + config.images.poster_sizes[1] + movie.poster_path;
-            var htmlStr = [
-                            '<div class="col-md-3 portfolio-item">',
-                                '<a href="/view/'+movie.id+'">',
-                                    '<img style="height:275px;width:275px;border-style:solid;border-width:5px;border-color:black;"class="img-responsive" src="' + imageSrc + '" alt="">',
-                                '</a>',
-                                '<h4>','<center>',
-                                    '<a href="/view/'+movie.id+'" style="color:black;text-style:bold;">' + movie.title +'</a>',
-                                '</center>','</h4>',
-                            '</div>'
-                            ];
-            $('.movies-list').append($(htmlStr.join('')));
-        });
-    }
+        data.results.forEach(function(movie){
+            var imageSrc = config.images.base_url + config.images.poster_sizes[3] + movie.poster_path;
+               var object = {
+                    "movie-id" : movie.id,
+                    "img" : imageSrc,
+                    "title": movie.title
+               };
+        var raw = $("#tpl-displaymovies").html();
+        var template = Handlebars.compile(raw);
+        var html = template(object);
+        $('.movies-list').append(html);
+
+           })();
+        }
+
 
     function loadNowShowing() {
         var nowShowingUrl = baseUrl + 'movie/now_playing';
@@ -175,8 +174,3 @@ $(document).ready(function(){
     });
     initialize(setEventHandlers);
 });
-
-
-
-
-
