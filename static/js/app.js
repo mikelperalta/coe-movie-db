@@ -1,4 +1,5 @@
-// your code here
+
+    // your code here
     var config;
     var baseUrl = 'http://api.themoviedb.org/3/';
     var apiKey = '99b4f3ecef69fffcf9e7b251fa336b31';
@@ -10,7 +11,12 @@
         },function(res) {
             config = res;
             console.log(config);
-            callback(config);
+            if(config){
+                callback(config);   
+            }else{
+                initialize(callback);
+            }
+            
         });
     }
 
@@ -27,7 +33,7 @@
 
         loadNowShowing();
 
-        $('.btn-upcoming').click(function() {
+        $('.btn-up-coming').click(function() {
             upcoming();
             
         });
@@ -59,20 +65,15 @@
         });
     }
     function displayMovies(data) {
-        data.results.forEach(function(movie){
-            var imageSrc = config.images.base_url + config.images.poster_sizes[3] + movie.poster_path;
-               var object = {
-                    "movie-id" : movie.id,
-                    "img" : imageSrc,
-                    "title": movie.title
-               };
-        var raw = $("#tpl-displaymovies").html();
-        var template = Handlebars.compile(raw);
-        var html = template(object);
-        $('.movies-list').append(html);
-
-           })();
-        }
+        var template_values = {
+            'config': config,
+            'result': data
+        };
+        writeTemplate("tpl-movie-list",template_values,"movies-list");
+        
+     
+        
+    }
 
     function loadNowShowing() {
         var nowShowingUrl = baseUrl + 'movie/now_playing';
@@ -124,52 +125,64 @@
     url = baseUrl + "movie/"+id;
     reqParam = {api_key:apiKey};
     $.get(url,reqParam,function(response){
+
         $("#title").html(response.original_title);
         $("#overview").html(response.overview);
-
+        if(response.tagline){
+            $("#tagline").html(response.tagline);
+        }else{
+            $("#tagline").html("No Tagline available");
+        }
+        });
         url = baseUrl + "movie/"+id+"/videos";
         $.get(url,reqParam,function(response){
-            var html = '<embed width="70%" height="400" src="https://www.youtube.com/v/'+response.results[0].key+'" type="application/x-shockwave-flash">'
-            $("#trailer").html(html);
+            console.log(response);
+            writeTemplate("tpl-trailer",response,"trailer");
         });
 
         url = baseUrl + "movie/"+id+"/credits";
         $.get(url,reqParam,function(response){
-            var casts = "";
-            for(var i=0;i<response.cast.length;i++){
-                casts+= (i!=response.cast.length-1)?response.cast[i].name+", "
-                    : " and "+response.cast[i].name;
-            }
-            $("#casts").html(casts);
+            var template_values = {
+                'config': config,
+                'result': response
+            };
+            writeTemplate("tpl-casts",template_values,"casts");
         });
 
         url = baseUrl + "movie/"+id+"/similar";
         $.get(url,reqParam,function(response){
-            var movies = response.results;
-            var allMovies = "";
-            var poster = config.images.base_url + config.images.poster_sizes[1];
-            for(var i=0;i<movies.length;i++){
-                allMovies += '<div class="col-sm-3 col-xs-6">'+
-                                '<a href="/view/'+movies[i].id+'">'+
-                                    '<img style="height:275px;width:275px;border-style:solid;border-width:5px;border-color:black;"class="img-responsive" class="img-responsive portfolio-item" src="'+poster+movies[i].poster_path+'" alt="">'+
-                                '</a>'+
-                                '<h5>'+
-                                    '<a href="/view/'+movies[i].id+'" style="color:black;text-style:bold;">'+movies[i].title+'</a>'+
-                                '</h5>'+
-                              '</div>';
-                //allMovies += (i==movies.length-1)? '<a href="/movie/'+movies[i].id+'">'+movies[i].title+'</a>, '
-                //    : '<a href="/movie/'+movies[i].id+'">'+movies[i].title+'</a>';
-            }
-            $("#similar").html(allMovies);
+            var template_values = {
+                "similar": response,
+                "config": config
+            };
+            console.log(template_values.similar.results)
+            writeTemplate("tpl-similar",template_values,"similar");
         });
-
-    });
+        url = baseUrl + "movie/"+id+"/images";
+        $.get(url,reqParam,function(response){
+            var template_values = {
+                "backdrop": response,
+                "config": config
+            };
+            console.log(template_values.similar.results)
+            writeTemplate("tpl-backdrop",template_values,"backdrop");
+        });
 }
-$(document).ready(function(){
+function writeTemplate(sourceID,values,outputID){
+        var html = getTemplate(sourceID,values)
 
+        $("#"+outputID).html(html);
+    }
+    function getTemplate(sourceID,values){
+        var source   = $("#"+sourceID).html();
+        var template = Handlebars.compile(source);  
+        var html = template(values);
+        return html;
+    }
+$(document).ready(function(){
     $(".btn-top-rated, .btn-popular, .btn-up-coming, .btn-now-showing").click(function(){
         $(".movie-view").hide();
-        $(".movies-list").show();
+        $("#movies-list").show();
     });
     initialize(setEventHandlers);
 });
